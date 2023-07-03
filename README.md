@@ -1,4 +1,4 @@
 # Eikobot Docker module
 
-A module for automating the installation and management of docker on hosts using eikobot.  
-
+A module for automating the installation of Hyper-V,
+and management of Hyper-V VMs and Virtual Switches on windows hosts using eikobot.  
