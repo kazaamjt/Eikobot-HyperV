@@ -1,0 +1,7 @@
+__pycache__
+.env/
+dist/
+venv/
+test.eiko
+.mypy_cache
+.vscode

@@ -1,0 +1,29 @@
+from std import Host
+
+resource HyperVHost(Host):
+    install: bool = False
+
+
+resource VMSwitch:
+    name: str
+    host: HyperVHost
+
+
+resource InternalSwitch(VMSwitch):
+    ...
+
+
+resource PrivateSwitch(VMSwitch):
+    ...
+
+
+enum MinimumBandwidthMode:
+    Default
+    Weight
+    Absolute
+
+
+resource ExternalSwitch(VMSwitch):
+    net_adapter_name: str
+    allow_management_OS: Optional[bool] = None
+    enable_Iov: Optional[bool] = None
