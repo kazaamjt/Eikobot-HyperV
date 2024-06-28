@@ -1,6 +1,6 @@
 [eiko.package]
 name = "eikobot-hyper-v"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 long_description = ""
 long_description_content_type = "text/markdown"
@@ -8,7 +8,6 @@ author = "kazaamjt"
 author_email = "kazaamjt@gmail.com"
 license = "MIT"
 source_dir = "hyper_v"
-eikobot_requires = ["==0.7.8"]
+eikobot_version="0.7.8"
 github_name = "kazaamjt/Eikobot-HyperV"
-requires = []
 python_requires = []
