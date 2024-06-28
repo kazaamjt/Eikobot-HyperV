@@ -8,7 +8,7 @@ author = "kazaamjt"
 author_email = "kazaamjt@gmail.com"
 license = "MIT"
 source_dir = "hyper_v"
-eikobot_requires = ">=0.7.8"
+eikobot_requires = ["==0.7.8"]
 github_name = "kazaamjt/Eikobot-HyperV"
 requires = []
 python_requires = []
