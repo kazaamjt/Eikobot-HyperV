@@ -1,18 +1,22 @@
 from std import Host
 
+
 resource HyperVHost(Host):
-    install: bool = False
+    install: bool = True
 
 
+@index(["vm_host.host", "name"])
 resource VMSwitch:
     name: str
-    host: HyperVHost
+    vm_host: HyperVHost
 
 
+@index(["vm_host.host", "name"])
 resource InternalSwitch(VMSwitch):
     ...
 
 
+@index(["vm_host.host", "name"])
 resource PrivateSwitch(VMSwitch):
     ...
 
@@ -23,7 +27,116 @@ enum MinimumBandwidthMode:
     Absolute
 
 
+@index(["vm_host.host", "name"])
 resource ExternalSwitch(VMSwitch):
     net_adapter_name: str
     allow_management_OS: Optional[bool] = None
     enable_Iov: Optional[bool] = None
+
+
+enum VHDType:
+    Fixed
+    Dynamic
+
+
+@index(["vm_host.host", "path"])
+resource VHD:
+    path: Path
+    vm_host: HyperVHost
+    size: str = "127GB"
+    vhd_type: VHDType = VHDType.Dynamic
+
+
+enum AutomaticStartAction:
+    Nothing
+    Start
+    StartIfRunning
+
+
+enum AutomaticStopAction:
+    Save
+    Shutdown
+    TurnOff
+
+
+enum BootDevice:
+    CD
+    NetworkAdapter
+    VHD
+
+
+@index(["vm_host.host", "name"])
+resource VM:
+    name: str
+    vm_host: HyperVHost
+
+    path: Optional[Path] = None
+    cpu_count: int = 1
+    boot_device: Optional[BootDevice] = None
+    vhds: list[VHD]
+    switches: list[VMSwitch]
+    iso_path: Optional[Path] = None
+
+    startup_ram: str = "1024MB"
+    dynamic_ram: bool = False
+    min_ram: str = "512MB"
+    max_ram: str = "2048MB"
+
+    automatic_start_action: Optional[AutomaticStartAction] = None
+    automatic_stop_action: Optional[AutomaticStopAction] = None
+    automatic_start_delay: Optional[int] = None
+
+    secure_boot: Optional[bool] = None
+    secure_boot_template: Optional[str] = None
+
+    def __init__(
+        self,
+        name: str,
+        vm_host: HyperVHost,
+
+        path: Optional[Path] = None,
+        cpu_count: int = 1,
+        boot_device: Optional[BootDevice] = None,
+        vhds: Optional[list[VHD]] = None,
+        switches: Optional[list[VMSwitch]] = None,
+        iso_path: Optional[Path] = None,
+
+        dynamic_ram: bool = False,
+        startup_ram: str = "1024MB",
+        min_ram: str = "512MB",
+        max_ram: str = "2048MB",
+
+        automatic_start_action: Optional[AutomaticStartAction] = None,
+        automatic_stop_action: Optional[AutomaticStopAction] = None,
+        automatic_start_delay: Optional[int] = None,
+
+        secure_boot: Optional[bool] = None,
+        secure_boot_template: Optional[str] = None,
+    ):
+        self.name = name
+        self.vm_host = vm_host
+
+        self.path = path
+        self.cpu_count = cpu_count
+        self.boot_device = boot_device
+        self.iso_path = iso_path
+
+        if vhds == None:
+            self.vhds = []
+        else:
+            self.vhds = vhds
+
+        if switches == None:
+            self.switches = []
+        else:
+            self.switches = switches
+
+        self.dynamic_ram = dynamic_ram
+        self.startup_ram = startup_ram
+        self.min_ram = min_ram
+        self.max_ram = max_ram
+        self.automatic_start_action = automatic_start_action
+        self.automatic_stop_action = automatic_stop_action
+        self.automatic_start_delay = automatic_start_delay
+        self.secure_boot = secure_boot
+        self.secure_boot_template = secure_boot_template

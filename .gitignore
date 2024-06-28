@@ -5,3 +5,4 @@ venv/
 test.eiko
 .mypy_cache
 .vscode
+.eikobot_cache
